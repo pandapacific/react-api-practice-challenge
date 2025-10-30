@@ -8,8 +8,9 @@ import fetchCall from './fetchCall.js';
 
 function App() {
   const [content, setContent] = useState([]);
-  const [items, setItems]
+  const [items, setItems] = useState(null)
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const API_URLS = {
     users: 'https://jsonplaceholder.typicode.com/users',
     posts: 'https://jsonplaceholder.typicode.com/posts',
@@ -25,7 +26,6 @@ function App() {
           fetchCall(API_URLS.posts),
           fetchCall(API_URLS.comments)
         ]);
-        console.log(results)
         const validData = [];
         const errors = [];
 
@@ -39,24 +39,35 @@ function App() {
         setContent(validData);
         setError(null);
       } catch (error) {
+        error.forEach(err => console.error('Error fetching data:', err));
         setError(error);
+      }finally {
+        setLoading(false);
       }
     };
 
     fetchAllData();
   }, []);
 
-  // const renderContent = (e) => {
-  //   const name = e.target.innerText;
+ 
+  const renderContent = (position) => {
+    const selectedContent = content[position] || [];
+    setItems(selectedContent);
+  }
+  // const errorHandler = (error) => {
+    
   // }
-  
 
   return (
     <div>
       <Header 
-     
+        renderContent={renderContent}
       />
-      <Content />
+      <Content 
+        items={items} 
+        error={error}
+        loading={loading}
+      />
     </div>
   )
 }
