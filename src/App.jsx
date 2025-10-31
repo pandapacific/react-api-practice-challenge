@@ -5,12 +5,12 @@ import {useEffect} from 'react';
 import fetchCall from './fetchCall.js';
 
 
-
 function App() {
   const [content, setContent] = useState([]);
   const [items, setItems] = useState(null)
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeButton, setActiveButton] = useState(null);
   const API_URLS = {
     users: 'https://jsonplaceholder.typicode.com/users',
     posts: 'https://jsonplaceholder.typicode.com/posts',
@@ -54,14 +54,14 @@ function App() {
     const selectedContent = content[position] || [];
     setItems(selectedContent);
   }
-  // const errorHandler = (error) => {
-    
-  // }
+  // items && console.log(Object.keys(items[0]));
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Header 
         renderContent={renderContent}
+        activeButton={activeButton}
+        setActiveButton={setActiveButton}
       />
       <Content 
         items={items} 
